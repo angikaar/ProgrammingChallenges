@@ -5,6 +5,7 @@ SELECT
 FROM marketing_performance
 GROUP BY date;
 
+
 -- QUESTION 2. Write a query to get the top three revenue-generating states in order of best to worst.
 -- How much revenue did the third best state generate?
 SELECT
@@ -15,6 +16,7 @@ GROUP BY state
 ORDER BY total_revenue DESC
 LIMIT 3;
 -- After running the query locally, the third-best state was "OH", Ohio, with a total revenue of 37577.0.
+
 
 -- QUESTION 3. Write a query that shows total cost, impressions, clicks, and revenue of each campaign.
 -- Make sure to include the campaign name in the output.
@@ -31,6 +33,7 @@ JOIN website_revenue wr ON
   mp.date = wr.date
 GROUP BY ci.name;
 
+
 -- QUESTION 4. Write a query to get the number of conversions of Campaign5 by state.
 -- Which state generated the most conversions for this campaign?
 SELECT
@@ -42,6 +45,7 @@ WHERE ci.name = 'Campaign5'
 GROUP BY mp.geo
 ORDER BY total_conversions DESC;
 -- After running the query locally, I found that "United States-GA", or Georgia, had the most conversions for this campaign at 672 conversions.
+
 
 -- QUESTION 5. In your opinion, which campaign was the most efficient, and why? 
 -- When I ran the following query:
@@ -76,16 +80,26 @@ ORDER BY
 -- There are various determinations of efficiency we can employ:
 -- * We could articulate Campaign3 is most efficient by its revenue generation – while it's the most expensive, it has produced
 --   significantly more conversions and money than the rest of the campaigns.
--- * We could articulate Campaign2 is most efficient by its ability to gather clicks – its cost per click is far lower than
+-- * We could articulate Campaign5 is most efficient by its ability to gather clicks – its cost per click is far lower than
 --   every other campaign's, meaning the ad campaign may be better at garnering interest in the content of the ad and increasing
 --   consumer response.
--- * We could articulate Campaign5 is most efficient by its ability to convert at a comparatively low cost – its cost per conversion
+-- * We could articulate Campaign2 is most efficient by its ability to convert at a comparatively low cost – its cost per conversion
 --   is far lower than every other campaign's, almost 2/3 of any other campaign. It also appears to convert roughly half of all
 --   those who click the ad.
 
+-- Of these, in *my* opinion, I believe Campaign2 was the most efficient. Efficiency and effectiveness aren't quite the same thing
+-- and Campaign2 was able to convert consumers at a relatively efficient cost per conversion and at a comparable cost per click to
+-- the other campaigns. On top of this, nearly half the total clicks in Campaign2 yielded conversions, whereas this ratio was
+-- roughly 1:4 to 1:5 in the other campaigns. These facts lead me to believe Campaign2 was the most efficient campaign.
 
 
-
-
-
-
+-- BONUS QUESTION 6. Write a query that showcases the best day of the week (e.g., Sunday, Monday, Tuesday, etc.) to run ads.
+SELECT
+  DAYNAME(date) AS day_of_week,
+  SUM(impressions) AS total_impressions,
+  SUM(cost) AS total_cost,
+  SUM(clicks) AS total_clicks,
+  SUM(conversions) AS total_conversions
+FROM marketing_performance
+GROUP BY DAYNAME(date)
+ORDER BY total_conversions DESC;
